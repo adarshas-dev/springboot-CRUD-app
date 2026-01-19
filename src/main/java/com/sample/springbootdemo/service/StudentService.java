@@ -8,6 +8,8 @@ public interface StudentService {
     public StudentModel insertNewStudent(StudentModel model);
     public List<StudentModel> viewAllStudents();
     public StudentModel viewOneStudent(Integer studentId);
+    public StudentModel updateStudentDetails(StudentModel model);
+    public StudentModel deleteStudentDetails(Integer studentId);
 }
 
 
