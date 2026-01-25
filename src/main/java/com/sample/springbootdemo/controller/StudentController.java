@@ -10,42 +10,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("student") //to make the url common word for identification http://localhost:8080/student/...
-
+@RequestMapping("students")
+@CrossOrigin("http://localhost:5173")
 public class StudentController {
-    @Autowired //declare object once and call it many times, to access object
-    StudentService studentService;
+    @Autowired
+    private StudentService service;
 
-    @PostMapping("add")
-    public ResponseEntity<StudentModel> insert(@RequestBody StudentModel model){//json type is converted to object model and stored in model
-//        return studentService.insertNewStudent(model);
-        return new ResponseEntity<>(studentService.insertNewStudent(model), HttpStatus.CREATED);
+    @PostMapping("add")//GET http://localhost:8081/students/add
+    public ResponseEntity<StudentModel> insert(@RequestBody StudentModel model){
+        return new ResponseEntity<>(service.insertNewStudent(model),HttpStatus.CREATED);
     }
 
-    @GetMapping("all")
-    public ResponseEntity<List<StudentModel>> viewAllStudents(){
-        return new ResponseEntity<>(studentService.viewAllStudents(), HttpStatus.OK);
-    }
-
-    @GetMapping("one/{studentId}")
-    public ResponseEntity<StudentModel> viewOneStudent(@PathVariable Integer studentId){
-        return new ResponseEntity<>(studentService.viewOneStudent(studentId), HttpStatus.OK);
-    }
-
-    @PutMapping("update")
+    @PutMapping("update")//POST http://localhost:8081/students/update
     public ResponseEntity<StudentModel> updateStudent(@RequestBody StudentModel model){
-        return new ResponseEntity<>(studentService.updateStudentDetails(model), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(service.updateStudentDetails(model),HttpStatus.ACCEPTED);
     }
-
-    @DeleteMapping("delete")
+    @DeleteMapping("delete")//DELETE http://localhost:8081/students/delete?studentId=5{any id can be used}
     public ResponseEntity<StudentModel> deleteStudent(@RequestParam Integer studentId){
-        return new ResponseEntity<>(studentService.deleteStudentDetails(studentId), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(service.deleteStudentDetails(studentId),HttpStatus.ACCEPTED);
     }
-//    http://localhost:8080/delete?studentId=2
-
-//    @DeleteMapping("delete/{studentId}")
-//    public ResponseEntity<StudentModel> deleteStudent(@PathVariable Integer studentId){
-//        return new ResponseEntity<>(studentService.deleteStudentDetails(studentId), HttpStatus.ACCEPTED);
-//    }
-//    http://localhost:8080/delete/2
+    @GetMapping("one")//GET http://localhost:8081/students/one/5
+    public ResponseEntity<StudentModel> viewOneStudent(@RequestParam Integer studentId){
+        return new ResponseEntity<>(service.viewOneStudent(studentId),HttpStatus.OK);
+    }
+    @GetMapping("all")// http://localhost:8081/students/all
+    public ResponseEntity<List<StudentModel>> viewAllStudent(){
+        return new ResponseEntity<>(service.viewAllStudents(),HttpStatus.OK);
+    }
 }
